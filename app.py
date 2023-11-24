@@ -13,7 +13,7 @@ import helper
 # Setting page layout
 st.set_page_config(
     page_title="Laitier_detection",
-    page_icon="🤖",
+    page_icon='images/logo.svg',#"🤖",
     layout="wide",
     initial_sidebar_state="expanded"
 )
