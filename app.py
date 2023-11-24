@@ -84,7 +84,7 @@ if settings.IMAGE == settings.IMAGE:
                                     )
                 boxes = res[0].boxes
                 res_plotted = res[0].plot()[:, :, ::-1]
-                print(boxes)
+                #print(boxes)
                 st.image(res_plotted, caption='Detected Image',
                          use_column_width=True)
                 try:
