@@ -6,7 +6,8 @@ ultralytics==8.0.172
 matplotlib>=3.2.2
 opencv-python-headless
 #opencv-python>=4.6.0
-
+Github
+PyGithub
 
 # Logging -------------------------------------
 # tensorboard>=2.13.0
