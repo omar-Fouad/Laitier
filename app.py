@@ -1,11 +1,12 @@
 # Python In-built packages
 from pathlib import Path
+
 import PIL
 #https://www.youtube.com/watch?v=UaHRkS7d8Ks
 #https://www.youtube.com/watch?v=LmNMLhMRZKE&t=6s
 # External packages
 import streamlit as st
-
+import os
 # Local Modules
 import settings
 import helper
@@ -13,7 +14,7 @@ import helper
 # Setting page layout
 st.set_page_config(
     page_title="Laitier_detection",
-    page_icon='images/logo.svg',#"🤖",
+    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -29,6 +30,7 @@ model_type = 'Detection' #st.sidebar.radio("Select Task", ['Detection', 'Segment
 
 confidence = float(st.sidebar.slider(
     "Select Model Confidence", 25, 100, 40)) / 100
+col11, col12 = st.sidebar.columns(2)#[1,1])
 
 # Selecting Detection Or Segmentation
 if model_type == 'Detection':
@@ -60,6 +62,10 @@ if settings.IMAGE == settings.IMAGE:
             if source_img is None:
                 default_image_path = str(settings.DEFAULT_IMAGE)
                 default_image = PIL.Image.open(default_image_path)
+                #filename = default_image_path.split("/")[len(default_image_path.split("/"))-1]
+                #filename=os.path.splitext(default_image_path)[-1] == '.jpg'
+                #print(Path(default_image_path).stem)
+                #print(filename)
                 st.image(default_image_path, caption="Default Image",
                          use_column_width=True)
             else:
@@ -94,7 +100,48 @@ if settings.IMAGE == settings.IMAGE:
                 except Exception as ex:
                     # st.write(ex)
                     st.write("No image is uploaded yet!")
-
+            with col11:        
+              if st.button('save good'):
+                # res = model.predict(uploaded_image,
+                                    # conf=confidence
+                                    # )
+                # boxes = res[0].boxes
+                # res_plotted = res[0].plot()[:, :, ::-1]
+                # #print(boxes)
+                # st.image(res_plotted, caption='Detected Image',
+                         # use_column_width=True)
+                temp=source_img.name
+                #filename=temp.decode('utf-8')
+                print(temp)#(Path(filename).stem)
+                filename='datasets/good/'+temp
+                uploaded_image.save(filename)
+                try:
+                    temp1="image: " +temp+ "is uploaded to good folder" 
+                    st.write(temp1)
+                except Exception as ex:
+                    # st.write(ex)
+                    st.write("No image is uploaded yet!")
+            with col12:        
+              if st.button('save bad'):
+                # res = model.predict(uploaded_image,
+                                    # conf=confidence
+                                    # )
+                # boxes = res[0].boxes
+                # res_plotted = res[0].plot()[:, :, ::-1]
+                # #print(boxes)
+                # st.image(res_plotted, caption='Detected Image',
+                         # use_column_width=True)
+                temp=source_img.name
+                #filename=temp.decode('utf-8')
+                print(temp)#(Path(filename).stem)
+                filename='datasets/bad/'+temp
+                uploaded_image.save(filename)
+                try:
+                    temp1="image: " +temp+ "is uploaded to bad folder" 
+                    st.write(temp1)
+                except Exception as ex:
+                    # st.write(ex)
+                    st.write("No image is uploaded yet!")                    
 # elif source_radio == settings.VIDEO:
     # helper.play_stored_video(confidence, model)
 
