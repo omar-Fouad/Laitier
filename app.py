@@ -1,16 +1,30 @@
 # Python In-built packages
 from pathlib import Path
 
-import PIL
+
 #https://www.youtube.com/watch?v=UaHRkS7d8Ks
 #https://www.youtube.com/watch?v=LmNMLhMRZKE&t=6s
 # External packages
 import streamlit as st
+import PIL 
 import os
+import io
 # Local Modules
 import settings
 import helper
+from github import Github
 
+g=Github("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")
+#g = Github("omar.19761116@gmail.com","ocima@2021")
+repo = g.get_repo("omar-Fouad/Laitier")
+message = "Commit Message"
+branch = "main"
+def push_image(path,commit_message,content,branch,update=False):
+    if update:
+        contents = repo.get_contents(path, ref=branch.name)
+        repo.update_file(contents.path, commit_message, content, branch, sha=contents.sha)
+    else:
+        repo.create_file(path, commit_message, content, branch)
 # Setting page layout
 st.set_page_config(
     page_title="Laitier_detection",
@@ -102,19 +116,22 @@ if settings.IMAGE == settings.IMAGE:
                     st.write("No image is uploaded yet!")
             with col11:        
               if st.button('save good'):
-                # res = model.predict(uploaded_image,
-                                    # conf=confidence
-                                    # )
-                # boxes = res[0].boxes
-                # res_plotted = res[0].plot()[:, :, ::-1]
-                # #print(boxes)
-                # st.image(res_plotted, caption='Detected Image',
-                         # use_column_width=True)
+ 
                 temp=source_img.name
-                #filename=temp.decode('utf-8')
+                
                 print(temp)#(Path(filename).stem)
                 filename='datasets/good/'+temp
+                
+                #newsize = (400, 300)
+                
+                
+                #uploaded_image = uploaded_image.resize(newsize)
                 uploaded_image.save(filename)
+                img_byte_arr = io.BytesIO()
+                uploaded_image.save(img_byte_arr, format='png')
+                img_byte_arr = img_byte_arr.getvalue()
+                temp1="image: " +temp+ "is uploaded to good folder"
+                push_image(filename,temp1,img_byte_arr,branch='main',update=False)  
                 try:
                     temp1="image: " +temp+ "is uploaded to good folder" 
                     st.write(temp1)
@@ -123,19 +140,16 @@ if settings.IMAGE == settings.IMAGE:
                     st.write("No image is uploaded yet!")
             with col12:        
               if st.button('save bad'):
-                # res = model.predict(uploaded_image,
-                                    # conf=confidence
-                                    # )
-                # boxes = res[0].boxes
-                # res_plotted = res[0].plot()[:, :, ::-1]
-                # #print(boxes)
-                # st.image(res_plotted, caption='Detected Image',
-                         # use_column_width=True)
                 temp=source_img.name
-                #filename=temp.decode('utf-8')
                 print(temp)#(Path(filename).stem)
                 filename='datasets/bad/'+temp
                 uploaded_image.save(filename)
+                img_byte_arr = io.BytesIO()
+                uploaded_image.save(img_byte_arr, format='png')
+                img_byte_arr = img_byte_arr.getvalue()
+                temp1="image: " +temp+ "is uploaded to bad folder"
+                push_image(filename,temp1,img_byte_arr,branch='main',update=False)  
+                
                 try:
                     temp1="image: " +temp+ "is uploaded to bad folder" 
                     st.write(temp1)
