@@ -16,7 +16,7 @@ from github import Github
 
 #g=Github("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")
 #g = Github("omar.19761116@gmail.com","ocima@2021")
-g=Github(st.secrets["db_username"])
+g=Github(st.secrets["token"])
 repo = g.get_repo("omar-Fouad/Laitier")
 message = "Commit Message"
 branch = "main"
