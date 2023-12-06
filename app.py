@@ -17,6 +17,7 @@ from github import Github
 #g=Github("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")
 #g = Github("omar.19761116@gmail.com","ocima@2021")
 g=Github(st.secrets["token"])
+#print("FUcccckkk="+st.secrets["token"])
 repo = g.get_repo("omar-Fouad/Laitier")
 message = "Commit Message"
 branch = "main"
@@ -92,30 +93,7 @@ if settings.IMAGE == settings.IMAGE:
             st.error(ex)
 
     with col2:
-        if source_img is None:
-            default_detected_image_path = str(settings.DEFAULT_DETECT_IMAGE)
-            default_detected_image = PIL.Image.open(
-                default_detected_image_path)
-            st.image(default_detected_image_path, caption='Detected Image',
-                     use_column_width=True)
-        else:
-            if st.sidebar.button('Detect Objects'):
-                res = model.predict(uploaded_image,
-                                    conf=confidence
-                                    )
-                boxes = res[0].boxes
-                res_plotted = res[0].plot()[:, :, ::-1]
-                #print(boxes)
-                st.image(res_plotted, caption='Detected Image',
-                         use_column_width=True)
-                try:
-                    with st.expander("Detection Results"):
-                        for box in boxes:
-                            st.write(box.data)
-                except Exception as ex:
-                    # st.write(ex)
-                    st.write("No image is uploaded yet!")
-            with col11:        
+        with col11:        
               if st.button('save good'):
  
                 temp=source_img.name
@@ -139,7 +117,7 @@ if settings.IMAGE == settings.IMAGE:
                 except Exception as ex:
                     # st.write(ex)
                     st.write("No image is uploaded yet!")
-            with col12:        
+        with col12:        
               if st.button('save bad'):
                 temp=source_img.name
                 print(temp)#(Path(filename).stem)
@@ -157,6 +135,30 @@ if settings.IMAGE == settings.IMAGE:
                 except Exception as ex:
                     # st.write(ex)
                     st.write("No image is uploaded yet!")                    
+    
+        if source_img is None:
+            default_detected_image_path = str(settings.DEFAULT_DETECT_IMAGE)
+            default_detected_image = PIL.Image.open(
+                default_detected_image_path)
+            st.image(default_detected_image_path, caption='Detected Image',
+                     use_column_width=True)
+        else:
+            if st.sidebar.button('Detect Objects'):
+                res = model.predict(uploaded_image,
+                                    conf=confidence
+                                    )
+                boxes = res[0].boxes
+                res_plotted = res[0].plot()[:, :, ::-1]
+                #print(boxes)
+                st.image(res_plotted, caption='Detected Image',
+                         use_column_width=True)
+                try:
+                    with st.expander("Detection Results"):
+                        for box in boxes:
+                            st.write(box.data)
+                except Exception as ex:
+                    # st.write(ex)
+                    st.write("No image is uploaded yet!")
 # elif source_radio == settings.VIDEO:
     # helper.play_stored_video(confidence, model)
 
